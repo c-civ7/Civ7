@@ -3,32 +3,126 @@
 
 using namespace std;
 
-void Card::setLand(land L){
-    land = l;
+void Card::setLand(Land L){
+    LAND = L;
 }
+void Card::setNumber(int n){
+    number = n;
+}
+void Card::setName(string p){
+    player = p;
+}
+
+
+tileCard::tileCard(Land c, int n){
+    setLand(c);
+    setNumber(n);
+}
+
+settlementCard::settlementCard(Land c, int n, string player){
+    setLand(c);
+    setNumber(n);
+    setName(player);
+}
+
 
 
 string Card::render(int line){
     switch(line){
         case 0: return ".............";
+        case 1: return "|           |";
+        case 2: return "|           |";
+        case 3: return "|           |";
+        case 4: return "|           |";
+        case 5: return "|           |";
+        case 6: return "|           |";
+        case 7: return "|___________|";
+        default:
+            return "";
+    }
+}
+
+string tileCard::render(int line){
+     stringstream ss;
+    switch(line){
+        case 0: return "....................";
         case 1: 
-            switch(Land){
+            switch(LAND){
                 case (FOREST):
-                    return "|   |";
+                    if(number<10)
+                    ss << "|Forest           "<<  number << "|";
+                    if(number>=10)
+                    ss << "|Forest          "<<  number << "|";
+                    return ss.str();
                 break;
                 case (HILLS):
-                    return "|   |";
+                    if(number<10)
+                    ss<< "|Hills            " <<  number << "|";
+                    if(number>=10)
+                    ss<< "|Hills           " <<  number << "|";
+                    return ss.str();
                 break;
                 case (FIELD):
-                    return "|   |";
+                     if(number<10)
+                    ss<< "|Fields           " <<  number << "|";
+                     if(number>=10)
+                     ss<< "|Fields          " <<  number << "|";
+                    return ss.str();
                 break;
                 case (PASTURE):
-                    return "|   |";
+                    if(number<10)
+                    ss<< "|Pasture          " <<  number << "|";
+                    if(number>=10)
+                    ss<< "|Pasture         " <<  number << "|";
+                    return ss.str();
                 break;
                 case (MOUNTAIN):
-                    return "|   |"
+                    if(number<10)
+                    ss<< "|Mountain         " <<  number << "|";
+                    if(number>=10)
+                    ss<< "|Mountain        " <<  number << "|";
+                    return ss.str();
                 break;
-            break;
+                default: return "";
+            }
+        case 2: return "|                  |";
+        case 3: return "|                  |";
+        case 4: return "|                  |";
+        case 5: return "|                  |";
+        case 6: return "|                  |";
+        case 7: return "|__________________|";
+        default:
+            return "";
+    }
+}
+    
+string settlementCard::render(int line){
+    stringstream ss;
+    switch(line){
+        case 0: return ".............";
+        case 1: 
+            switch(LAND){
+                case (FOREST):
+                    ss << "|Forest  "<<  number << " |";
+                    return ss.str();
+                break;
+                case (HILLS):
+                    ss<< "|Hills " <<  number << " |";
+                    return ss.str();
+                break;
+                case (FIELD):
+                    ss<< "|Fields " <<  number << " |";
+                    return ss.str();
+                break;
+                case (PASTURE):
+                    ss<< "|Pasture " <<  number << " |";
+                    return ss.str();
+                break;
+                case (MOUNTAIN):
+                    ss<< "|Mountain " <<  number << " |";
+                    return ss.str();
+                break;
+                default: return "";
             }
         case 2: return "|           |";
         case 3: return "|           |";
@@ -37,7 +131,7 @@ string Card::render(int line){
         case 6: return "|           |";
         case 7: return "|___________|";
         default:
-            return " ";
+            return "";
     }
 }
     

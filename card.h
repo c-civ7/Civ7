@@ -3,25 +3,40 @@
 
 #include <iostream>
 #include <sstream>
+#include<string>
 
 
 using namespace std;
 
 enum Land{FOREST, HILLS, FIELD, PASTURE, MOUNTAIN};
 
-class card{
+class Card{
     protected:
     
-    Land l;
+    Land LAND;
     int number;
-    public:
+    string player;
     
+    public:
+    void setLand(Land);
+    void setNumber(int);
+    void setName(string);
     virtual string render(int); 
-
 };
 
 
+class tileCard: public Card{
+    public:
+    tileCard(Land, int);
+    string render(int);
+};
 
+
+class settlementCard: public Card{
+    public:
+    settlementCard(Land, int,string);
+    string render(int);
+};
 
 
 
