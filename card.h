@@ -21,6 +21,9 @@ class Card{
     void setLand(Land);
     void setNumber(int);
     void setName(string);
+    int getNumber();
+    Land getLand();
+    string getName();
     virtual string render(int); 
 };
 
@@ -31,15 +34,23 @@ class tileCard: public Card{
     string render(int);
 };
 
-
 class settlementCard: public Card{
     public:
     settlementCard(Land, int,string);
     string render(int);
 };
 
+class cityCard: public Card{
+    public:
+    cityCard(Land, int,string);
+    string render(int);
+};
 
-
+class developmentCard: public Card{
+    public:
+    developmentCard();
+   
+};
 
 
 

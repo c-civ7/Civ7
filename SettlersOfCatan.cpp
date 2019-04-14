@@ -1,14 +1,17 @@
 #include <iostream> 
 #include "card.cpp"
+#include "inventoryPlayer.h"
 #include <vector>
+#include <string>
 
 using namespace std;
 
-void buildDeck(vector<Card*> &deck){
-    for(int i=0; i<100; i++){
+void buildDeck(vector<Card*> &deck, int decksize){
+    for(int i=0; i<decksize; i++){
     for(int c = FOREST; c <= MOUNTAIN; c++){
         for(int n = 2; n <= 12; n++){
            deck.push_back(new tileCard((Land)c,n));
+           //deck.push_back(new settlementCard((Land)c,n, "BITCH"));
         }
     }
     }
@@ -47,20 +50,41 @@ void shuffle(vector<Card*> &deck){
     }
 }
 
+void buildSettlement(vector<Card*> &deck,int decksize, string player){
+   int idx1=rand()% decksize;
+ 
+    Card* temp=(new settlementCard(deck.at(idx1)->getLand(), deck.at(idx1)->getNumber(), player));
+    deck.at(idx1)=temp;
+
+
+}
+
 int main(){
     srand(time(0));
     
     int row;
     int column;
-    
-    vector<Card*> deck;
-    buildDeck(deck);
-    shuffle(deck);
+   
+    int numPlayers;
+    string player;
     
     cout<< "how many rows would you like?"<< endl;
     cin >>row;
     cout<< "how many columns would you like?"<< endl;
     cin>> column;
+    int deckSize= row*column;
+    vector<Card*> deck;
+    buildDeck(deck, deckSize);
+    shuffle(deck);
+    
+    cout<< "How many players are there?"<< endl;
+    cin>> numPlayers;
+    
+    for(int i=1; i<=numPlayers;i++){
+    cout << "name of player #" << i << ":"<< endl;
+    cin >> player;
+    buildSettlement(deck,deckSize, player);
+    }
     renderdeck(deck, row, column);
     
     cout<< " DO YOU LIKE IT RAW?!!!"<< endl;
