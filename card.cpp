@@ -164,7 +164,7 @@ string settlementCard::render(int line){
         case 4: return "|      |_ _|       |";
         case 5: return "|                  |";
         case 6:
-        ss1<< "|             "  << player << "|";
+        ss1<< "|"   << setw(18)  << setfill(' ')   << player << "|";
         return ss1.str();
         break;
         case 7: return "|__________________|";
@@ -223,7 +223,7 @@ string cityCard::render(int line){
         case 4: return "|      |---|       |";
         case 5: return "|      |___|       |";
         case 6:
-        ss1<< "|             "  << player << "|";
+        ss1<< "|"   << setw(8)  << setfill(' ')   << player << "|";
         return ss1.str();
         break;
         case 7: return "|__________________|";
