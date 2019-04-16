@@ -13,11 +13,11 @@ class Inventory{
     protected:
     
     //RESOURCES
-    int wood;
-    int bricks;
-    int field;
-    int wool;
-    int ore;
+    int wood=1;
+    int bricks=1;
+    int field=1;
+    int wool=1;
+    int ore=1;
     
     //VICTORY POINTS
     int victory=0;
