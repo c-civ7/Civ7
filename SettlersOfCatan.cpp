@@ -50,14 +50,92 @@ void shuffle(vector<Card*> &deck){
     }
 }
 
-void buildSettlement(vector<Card*> &deck,int decksize, string player){
+void buildInitial(vector<Card*> &deck,int decksize, string player){
    int idx1=rand()% decksize;
- 
     Card* temp=(new settlementCard(deck.at(idx1)->getLand(), deck.at(idx1)->getNumber(), player));
     deck.at(idx1)=temp;
+}
 
+void buildSettlement(vector<Card*> &deck, string player, int r, int c){
+    int row, column,loop=1;
+    int idx;
+    while(loop==1){
+    cout<< player << " where would you like to place your new settlement card:" << " enter row"<< endl;
+    cin >> row;
+    cout << "Enter column:"<< endl;
+    cin >> column;
+    
+    idx=(row*r)+column;
+    if(column==0){
+        if(deck.at(idx-row)->getName()==player || deck.at(idx+row)->getName()==player || deck.at(idx+1)->getName()==player){
+            Card* temp=(new settlementCard(deck.at(idx)->getLand(), deck.at(idx)->getNumber(), player));
+            deck.at(idx)=temp;
+            loop=0;
+        }
+    }else if(column==(c-1)){
+            if(deck.at(idx-row)->getName()==player || deck.at(idx+row)->getName()==player || deck.at(idx-1)->getName()==player){
+            Card* temp=(new settlementCard(deck.at(idx)->getLand(), deck.at(idx)->getNumber(), player));
+            deck.at(idx)=temp;
+            loop=0;
+            }
+    }else{
+         if(deck.at(idx-row)->getName()==player || deck.at(idx+row)->getName()==player|| deck.at(idx+1)->getName()==player || deck.at(idx-1)->getName()==player){
+                Card* temp=(new settlementCard(deck.at(idx)->getLand(), deck.at(idx)->getNumber(), player));
+                deck.at(idx)=temp;
+                loop=0;
+             }
+        
+    }
+    if(loop==1)
+        cout<< "WRONG CHOICE, TRY AGAIN"<< endl;
+    }
 
 }
+//buildcity would technically be able to build a city on top of a city :/
+void buildCity(vector<Card*> &deck, string player, int r, int c){
+    int idx, row, column,loop=1;
+    
+    while(loop==1){
+    cout << player <<" where would you like to build a city?(MUST BE IN YOUR SETTLEMENT): " << "enter row"<< endl;
+    cin>> row;
+    cout << "Enter Column: "<< endl;
+    cin>> column;
+    idx=(row*r)+column;
+    
+    if(deck.at(idx)->getName()==player){
+        Card* temp=(new cityCard(deck.at(idx)->getLand(), deck.at(idx)->getNumber(), player));
+            deck.at(idx)=temp;
+        loop=0;
+    }
+    if(loop==1)
+        cout<< "Wrong choice!, try again!"<< endl;
+    }
+}
+
+void takeTurn(vector<Card*>&deck, string player, int r, int c){
+    int choice;
+    cout<< player << " Would you like to build a settlement, a city, trade, or buy a development card?(1-4)"<< endl;
+    cin >> choice;
+    switch(choice){
+        case 1:
+            buildSettlement(deck, player, r, c);
+            break;
+        case 2:
+            buildCity(deck,player,r, c);
+            break;
+        case 3:
+            cout <<"suck MY FUCKING DICK BITCH"<< endl;
+            break;
+        case 4 :
+            //buy development card
+        default: 
+            break;
+    }
+    
+}
+
+
+
 
 int main(){
     srand(time(0));
@@ -67,6 +145,7 @@ int main(){
    
     int numPlayers;
     string player;
+    vector<string> players;
     
     cout<< "how many rows would you like?"<< endl;
     cin >>row;
@@ -83,11 +162,20 @@ int main(){
     for(int i=1; i<=numPlayers;i++){
     cout << "name of player #" << i << ":"<< endl;
     cin >> player;
-    buildSettlement(deck,deckSize, player);
+    players.push_back(player);
+    buildInitial(deck,deckSize, player);
     }
     renderdeck(deck, row, column);
     
-    cout<< " DO YOU LIKE IT RAW?!!!"<< endl;
-    cin >> column;
+ 
+   while(1){
+       for(int i=0; i<numPlayers; i++){
+           takeTurn(deck, players.at(i), row, column);
+           renderdeck(deck, row, column);
+       }
+   }
+    
+    
+    
     return 0;
 }
