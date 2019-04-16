@@ -4,13 +4,13 @@
 using namespace std;
 
 void Inventory::setWood(int w){
-    wool= w;
+    wood= w;
 }
 void Inventory::setBricks(int b){
     bricks = b;
 }
-void Inventory::setField(int F){
-    field = F;
+void Inventory::setGrain(int g){
+    grain = g;
 }
 void Inventory::setWool(int w){
     wool = w;
@@ -25,21 +25,25 @@ void Inventory::setVictory(int V){
 
 
 
-int Inventory::getWood(int w){
-    return  wool;
+int Inventory::getWood(){
+    return wood;
 }
-int Inventory::getBricks(int b){
+int Inventory::getBricks(){
     return bricks;
 }
-int Inventory::getField(int F){
-    return field;
+int Inventory::getGrain(){
+    return grain;
 }
-int Inventory::getWool(int w){
+int Inventory::getWool(){
    return wool;
 }
-int Inventory::getOre(int o){
+int Inventory::getOre(){
     return ore;
 }
-int Inventory::getVictory(int V){
+int Inventory::getVictory(){
     return victory;
 }
+
+//int playerInventory::outputInv(){
+    //cout<< "Wool"<< Inventory.getWool()<< endl;
+//}

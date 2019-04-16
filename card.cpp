@@ -1,5 +1,5 @@
 #include "card.h"
-#include "inventoryPlayer.cpp"
+#include "inventoryPlayer.h"
 
 
 using namespace std;
@@ -14,6 +14,10 @@ void Card::setName(string p){
     player = p;
 }
 
+void Card::setType(int p){
+    type=p;
+}
+
 Land Card::getLand(){
     return LAND;
 }
@@ -22,6 +26,10 @@ int Card::getNumber(){
 }
 string Card:: getName(){
     return player;
+}
+
+int Card:: getType(){
+    return type;
 }
 
 tileCard::tileCard(Land c, int n){
@@ -33,17 +41,19 @@ settlementCard::settlementCard(Land c, int n, string player){
     setLand(c);
     setNumber(n);
     setName(player);
+    setType(-1);
 }
 
 cityCard::cityCard(Land c, int n, string player){
     setLand(c);
     setNumber(n);
     setName(player);
+    setType(-2);
 }
 
-developmentCard::developmentCard(){
+//developmentCard::developmentCard(){
   
-}
+//}
 
 
 string Card::render(int line){
@@ -231,3 +241,15 @@ string cityCard::render(int line){
             return "";
     }
 }
+
+
+//int developmentCard::victoryCard{
+    //setVictory(getVictory() + 1);
+//}
+//int developmentCard::harvestCard{
+   // setBricks(getBricks() + 1);
+    //setWood(getWood() + 1);
+    //setWool(getWool()  + 1);
+   // setField(getField() + 1);
+    //setOre(getOre() + 1);
+//}

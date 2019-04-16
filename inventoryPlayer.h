@@ -15,7 +15,7 @@ class Inventory{
     //RESOURCES
     int wood=1;
     int bricks=1;
-    int field=1;
+    int grain=1;
     int wool=1;
     int ore=1;
     
@@ -26,17 +26,23 @@ class Inventory{
     public:
     void setWood(int);
     void setBricks(int);
-    void setField(int);
+    void setGrain(int);
     void setWool(int);
     void setOre(int);
     void setVictory(int);
     
-    int getWood(int);
-    int getBricks(int);
-    int getField(int);
-    int getWool(int);
-    int getOre(int);
-    int getVictory(int);
+    
+    int getWood();
+    int getBricks();
+    int getGrain();
+    int getWool();
+    int getOre();
+    int getVictory();
+    
+//class playerInventory:: public Inventory(){
+  //  public:
+ //  int outputInv();
+//}
 };
 
 #endif

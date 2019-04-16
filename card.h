@@ -17,12 +17,15 @@ class Card{
     Land LAND;
     int number;
     string player;
+    int type;
     
     public:
     void setLand(Land);
     void setNumber(int);
     void setName(string);
+    void setType(int);
     int getNumber();
+    int getType();
     Land getLand();
     string getName();
     virtual string render(int); 
@@ -47,13 +50,18 @@ class cityCard: public Card{
     string render(int);
 };
 
-class developmentCard: public Card{
-    public:
-    developmentCard();
-   
+class developmentCard{
+    
 };
-
-
+class victoryCard: public developmentCard{
+    
+};
+class harvestCard: public developmentCard{
+    
+};
+class knightCard: public developmentCard{
+    
+};
 
 
 
