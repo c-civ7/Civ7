@@ -10,14 +10,14 @@ using namespace std;
 
 
 class Inventory{
-    protected:
+    private:
     
     //RESOURCES
-    int wood=1;
-    int bricks=1;
-    int grain=1;
-    int wool=1;
-    int ore=1;
+    int wood;
+    int bricks;
+    int grain;
+    int wool;
+    int ore;
     
     //VICTORY POINTS
     int victory=0;
@@ -39,10 +39,7 @@ class Inventory{
     int getOre();
     int getVictory();
     
-//class playerInventory:: public Inventory(){
-  //  public:
- //  int outputInv();
-//}
+
 };
 
 #endif

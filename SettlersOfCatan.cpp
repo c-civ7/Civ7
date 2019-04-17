@@ -64,7 +64,7 @@ void buildInitial(vector<Card*> &deck,int decksize, string player, vector<Card*>
     hand.push_back(new settlementCard(deck.at(idx1)->getLand(), deck.at(idx1)->getNumber(), player));
 }
 
-int setResources(Inventory inventory, int n){
+int setResources(Inventory &inventory, int n){
     inventory.setBricks(n);
     inventory.setWood(n);
     inventory.setGrain(n);
@@ -72,47 +72,60 @@ int setResources(Inventory inventory, int n){
     inventory.setOre(n);
 }
 
-void coutResources(Inventory inventory){
+void coutResources(Inventory &inventory){
     cout << "These are your resources:"<< endl;
-    cout <<"Wood: " << inventory.getWood() << endl;
-    cout <<"Bricks: " << inventory.getBricks() << endl;
-    cout <<"Grain: " << inventory.getGrain() << endl;
-    cout <<"Wool: " << inventory.getWool() << endl;
-    cout <<"Ore: " << inventory.getOre() << endl;
+    cout <<"Wood(" << inventory.getWood() << ")  ";
+    cout <<"Bricks(" << inventory.getBricks() << ")  ";
+    cout <<"Grain(" << inventory.getGrain() << ")  ";
+    cout <<"Wool(" << inventory.getWool() << ")  ";
+    cout <<"Ore(" << inventory.getOre() << ")  ";
     cout <<"Victory Points: " << inventory.getVictory()<< endl;
 }
 
-void buildSettlement(vector<Card*> &deck, string player, int r, int c, vector<Card*>&hand,Inventory inventory){
+void buildSettlement(vector<Card*> &deck, string player, int r, int c, vector<Card*>&hand,Inventory &inventory){
     int row, column,loop=1;
     int idx;
     while(loop==1){
     cout<< player << " where would you like to place your new settlement card:" << " enter row"<< endl;
     cin >> row;
     cout << "Enter column:"<< endl;
+    
     cin >> column;
     
     idx=(row*r)+column;
+    if( (row>=0 && row<=(r)) && (column>=0 && column<=(c))){
     if(deck.at(idx)->getType()!=-1 && deck.at(idx)->getType()!=-2){
-    if(column==0){
+    if(column==0 && row== 0){
+            if(deck.at(idx+r)->getName()==player || deck.at(idx+1)->getName()==player){
+            loop=0;
+            }
+        }
+    else if(column==0 && row!=0){
         if(deck.at(idx-r)->getName()==player || deck.at(idx+r)->getName()==player || deck.at(idx+1)->getName()==player){
-            Card* temp=(new settlementCard(deck.at(idx)->getLand(), deck.at(idx)->getNumber(), player));
-            deck.at(idx)=temp;
-            hand.push_back(new settlementCard(deck.at(idx)->getLand(), deck.at(idx)->getNumber(), player));
             loop=0;
         }
-    }else if(column==(c-1)){
+    }
+    else if(column==(c-1) && row==0){
+        if(deck.at(idx+r)->getName()==player || deck.at(idx-1)->getName()==player){
+            loop=0;
+        }
+    }else if(column==(c-1)&&row!=0){
             if(deck.at(idx-r)->getName()==player || deck.at(idx+r)->getName()==player || deck.at(idx-1)->getName()==player){
-            Card* temp=(new settlementCard(deck.at(idx)->getLand(), deck.at(idx)->getNumber(), player));
-            deck.at(idx)=temp;
-            hand.push_back(new settlementCard(deck.at(idx)->getLand(), deck.at(idx)->getNumber(), player));
+            loop=0;
+            }
+    }else if(column!=0&&row==0){
+            if(deck.at(idx+r)->getName()==player || deck.at(idx-1)->getName()==player || deck.at(idx+1)->getName()==player){
             loop=0;
             }
     }else if(deck.at(idx-r)->getName()==player || deck.at(idx+r)->getName()==player|| deck.at(idx+1)->getName()==player || deck.at(idx-1)->getName()==player){
-                Card* temp=(new settlementCard(deck.at(idx)->getLand(), deck.at(idx)->getNumber(), player));
-                deck.at(idx)=temp;
-                hand.push_back(new settlementCard(deck.at(idx)->getLand(), deck.at(idx)->getNumber(), player));
                 loop=0;
              }
+    }       
+    }  
+    if(loop==0){
+        Card* temp=(new settlementCard(deck.at(idx)->getLand(), deck.at(idx)->getNumber(), player));
+        deck.at(idx)=temp;
+        hand.push_back(new settlementCard(deck.at(idx)->getLand(), deck.at(idx)->getNumber(), player));
     }
     if(loop==1)
         cout<< "WRONG CHOICE, TRY AGAIN"<< endl;
@@ -121,11 +134,9 @@ void buildSettlement(vector<Card*> &deck, string player, int r, int c, vector<Ca
     inventory.setWool(inventory.getWool()-1);
     inventory.setWood(inventory.getWood()-1);
     inventory.setGrain(inventory.getGrain()-1);
-    coutResources(inventory);
-    
 }
 //buildcity would technically be able to build a city on top of a city :/
-void buildCity(vector<Card*> &deck, string player, int r, int c, vector<Card*>&hand, Inventory inventory){
+void buildCity(vector<Card*> &deck, string player, int r, int c, vector<Card*>&hand, Inventory &inventory){
     int idx, row, column,loop=1;
     
     while(loop==1){
@@ -146,10 +157,9 @@ void buildCity(vector<Card*> &deck, string player, int r, int c, vector<Card*>&h
     }
     inventory.setGrain(inventory.getGrain()-3);
     inventory.setOre(inventory.getOre()-2);
-    coutResources(inventory);
 }
 
-void addResources(vector<Card*>&hand, Inventory inventory, int num){
+void addResources(vector<Card*>&hand, Inventory &inventory, int num){
     
     for(int i=0; i<hand.size();i++){
         if (hand.at(i)->getType()==-1 && hand.at(i)->getNumber()==num){
@@ -196,42 +206,60 @@ void addResources(vector<Card*>&hand, Inventory inventory, int num){
     }
 }
 
-void takeTurn(vector<Card*>&deck, string player, int r, int c,vector<Card*>&hand, Inventory inventory){
-    int dice1;
-    int dice2;
-    dice1= rand()% 6+1;
-    dice2= rand()%6+1;
-    dice1=dice1+dice2;
-    cout << "You rolled a "<< dice1 << "!" <<endl;
-    addResources(hand, inventory, dice1);
+void takeTurn(vector<Card*>&deck, string player, int r, int c,vector<Card*>&hand, Inventory &inventory){
+    int dice;
+    int temp, temp2;
+    dice= rand()% 6+1;
+    temp= rand()%6+1;
+    dice=dice+temp;
+    cout << "You rolled a "<< dice << "!" <<endl;
+    addResources(hand, inventory, dice);
     coutResources(inventory);
-    dice2=1;
+    temp=1;
     
-    while(dice2==1){
+    while(temp==1){
     int choice;
-    cout<< player << " Would you like to build a settlement, a city, trade, or buy a development card?(1-4)"<< endl;
+    cout<< player << " Would you like to buy, trade, or skip turn?? (1-3)"<< endl;
     cin >> choice;
     switch(choice){
         case 1:
-            if(inventory.getBricks()>=1 && inventory.getGrain()>=1 && inventory.getWool()>=1 && inventory.getWood()>=1){
-            buildSettlement(deck, player, r, c, hand,inventory);
-            dice2=0;
-            }else
-            cout << "you don't have enough materials to buy a settlement"<< endl;
+            cout<< "Would you like to buy a settlement, City, or develepment card? (1-3)"<< endl;
+            cin >> choice;
+            switch(choice){
+                case 1:
+                    if(inventory.getBricks()>=1 && inventory.getGrain()>=1 && inventory.getWool()>=1 && inventory.getWood()>=1){
+                        buildSettlement(deck, player, r, c, hand,inventory);
+                        temp=0;
+                        }else
+                        cout << "you don't have enough materials to buy a settlement"<< endl;
+                        break;
+                case 2:
+                    if(inventory.getGrain()>=3 && inventory.getOre()>=2){
+                        buildCity(deck,player,r, c, hand, inventory);
+                        temp=0;
+                        }else
+                        cout << "you don't have enough materials to buy a city"<< endl;
+                    break;
+                case 3:
+                
+                    break;
+                default:
+                    break;
+            }
             break;
         case 2:
-            if(inventory.getGrain()>=3 && inventory.getOre()>=2){
-            buildCity(deck,player,r, c, hand, inventory);
-            dice2=0;
-            }else
-            cout << "you don't have enough materials to buy a city"<< endl;
+            cout<< "What materials would you like to trade?Remember you need 3 resources of one material to trade for 1"<< endl;
+            cout<< "1 for wood, 2 for bricks, 3 for grain, 4 for wool, and 5 for Ore"<< endl;
+            cin>> temp2;
+            //Here you check if theres 3 materials, if not, u cant do this shit then DAWG
+            cout<< "What material would you like to have instead?"<< endl;
+            cout<< "1 for wood, 2 for bricks, 3 for grain, 4 for wool, and 5 for Ore"<< endl;
+            cin>> temp2;
             break;
         case 3:
-            //trade?
-            cout <<"suck MY FUCKING DICK BITCH"<< endl;
+            cout<< "SKIP"<< endl;
+            temp=0;
             break;
-        case 4 :
-            //buy development card
         default: 
             break;
          }
