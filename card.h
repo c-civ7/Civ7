@@ -50,19 +50,5 @@ class cityCard: public Card{
     string render(int);
 };
 
-class developmentCard{
-    
-};
-class victoryCard: public developmentCard{
-    
-};
-class harvestCard: public developmentCard{
-    
-};
-class knightCard: public developmentCard{
-    
-};
-
-
 
 #endif

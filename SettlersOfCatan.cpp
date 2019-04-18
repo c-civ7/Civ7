@@ -282,12 +282,54 @@ void trade(Inventory &inventory){
 
 }
 
-void takeTurn(vector<Card*>&deck, string player, int r, int c,vector<Card*>&hand, Inventory &inventory){
-    int dice;
+int totalResources(Inventory &inventory){
+    int total= inventory.getWood()+inventory.getBricks()+inventory.getOre()+inventory.getGrain()+inventory.getWool();
+    return total;
+}
+
+void development(Inventory &inventory, vector<Inventory> &all){
+    vector<int>array = {1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,3,3,3,3};
     int temp, temp2;
-    dice= rand()% 6+1;
-    temp= rand()%6+1;
-    dice=dice+temp;
+    int temp3= rand()%5;
+    int idx1, idx2;
+    for(int i = 0; i < 10000; i++){
+        idx1 = rand() % array.size();
+        idx2 = rand() % array.size();
+        
+        temp = array[idx1];
+        array[idx1] = array[idx2];
+        array[idx2] = temp;
+    }
+    int random= rand()%20;
+    switch(random){
+        case(1):
+        inventory.setVictory(inventory.getVictory()+1);
+            break;
+        case(2):
+            inventory.setBricks(inventory.getBricks()+1);
+            inventory.setWood(inventory.getWood()+1);
+            inventory.setGrain(inventory.getGrain()+1);
+            inventory.setWool(inventory.getWool()+1);
+            inventory.setOre(inventory.getOre()+1);
+        case(3):
+            cout<< "WHO WOULD U LIKE TO STEAL IT FROM?!You can choose from 0 to"<< all.size()-1<< endl;
+            cin>>temp2;
+          // int total= totalResources(all.at(temp2));
+            //if(total==0){
+                //cout << "That player doesn't have any resources!, tough luck!"<< endl;
+           // } 
+            break;
+        default:
+            break;
+    }
+cout << totalResources(all.at(temp2))<< endl;
+}
+
+
+void takeTurn(vector<Card*>&deck, string player, int r, int c,vector<Card*>&hand, Inventory &inventory, vector<Inventory>&all){
+    int dice;
+    int temp;
+    dice= rand()% 12+2;
     cout << "You rolled a "<< dice << "!" <<endl;
     addResources(hand, inventory, dice);
     coutResources(inventory);
@@ -305,20 +347,20 @@ void takeTurn(vector<Card*>&deck, string player, int r, int c,vector<Card*>&hand
                 case 1:
                     if(inventory.getBricks()>=1 && inventory.getGrain()>=1 && inventory.getWool()>=1 && inventory.getWood()>=1){
                         buildSettlement(deck, player, r, c, hand,inventory);
-                        temp=0;
                         }else
                         cout << "you don't have enough materials to buy a settlement"<< endl;
                         break;
                 case 2:
-                    if(inventory.getGrain()>=3 && inventory.getOre()>=2){
+                    if(inventory.getGrain()>=3 && inventory.getOre()>=2)
                         buildCity(deck,player,r, c, hand, inventory);
-                        temp=0;
-                        }else
+                    else
                         cout << "you don't have enough materials to buy a city"<< endl;
                     break;
                 case 3:
-                    trade(inventory);
-                    
+                    if(inventory.getOre()>=1 && inventory.getWool()>=1 && inventory.getGrain()>=1)
+                    development(inventory, all);
+                    else
+                        cout<< "you don't have enough materials to buy a development!"<< endl;
                     break;
                 default:
                     break;
@@ -374,7 +416,7 @@ int victory=1;
    while(victory==1){
        for(int i=0; i<numPlayers; i++){
            renderdeck(deck, row, column);
-           takeTurn(deck, players.at(i), row, column, hands.at(i), inventory.at(i));
+           takeTurn(deck, players.at(i), row, column, hands.at(i), inventory.at(i), inventory);
            if(inventory.at(i).getVictory()==10){
             cout<< players.at(i) << " YOU WON, CONGRATULATIONS!!!!!!!"<< endl;
            victory==0;
