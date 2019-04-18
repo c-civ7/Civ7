@@ -157,6 +157,7 @@ void buildCity(vector<Card*> &deck, string player, int r, int c, vector<Card*>&h
     }
     inventory.setGrain(inventory.getGrain()-3);
     inventory.setOre(inventory.getOre()-2);
+    inventory.setVictory(inventory.getVictory()+1);
 }
 
 void addResources(vector<Card*>&hand, Inventory &inventory, int num){
@@ -206,6 +207,81 @@ void addResources(vector<Card*>&hand, Inventory &inventory, int num){
     }
 }
 
+void trade(Inventory &inventory){
+    int temp;
+    int temp2=0;
+    while(temp2==0){
+    cout<< "What materials would you like to trade?Remember you need 3 resources of one material to trade for 1"<< endl;
+    cout<< "1 for wood, 2 for bricks, 3 for grain, 4 for wool, and 5 for Ore(6 to quit)"<< endl;
+    cin>> temp;
+    switch(temp){
+        case(1):
+            if(inventory.getWood()>=3){
+                inventory.setWood(inventory.getWood()-3);  
+                temp2=1;  
+            }
+            break;
+        case(2):
+            if(inventory.getBricks()>=3){
+                inventory.setBricks(inventory.getBricks()-3);    
+                temp2=1;  
+            }
+            break;
+        case(3):
+            if(inventory.getGrain()>=3){
+                inventory.setGrain(inventory.getGrain()-3);    
+                temp2=1;
+            }
+            break;
+        case(4):
+            if(inventory.getWool()>=3){
+                inventory.setWool(inventory.getWool()-3);    
+                temp2=1;
+            }
+            break;
+        case(5):
+            if(inventory.getOre()>=3){
+                inventory.setOre(inventory.getOre()-3);    
+                temp2=1;
+            }
+            break;
+        case(6):
+            temp2=2;
+            break;
+       default:
+            break;
+        
+    }
+    if(temp2==0)
+    cout<<"NOT ENOUGH MATERIALS FOR THAT TRY AGAIN"<< endl;
+    }
+    if(temp2==1){
+        cout<< "What material would you like to have instead?"<< endl;
+    cout<< "1 for wood, 2 for bricks, 3 for grain, 4 for wool, and 5 for Ore"<< endl;
+    cin>> temp;
+        switch(temp){
+        case(1):
+            inventory.setWood(inventory.getWood()+1);
+            break;
+        case(2):
+            inventory.setBricks(inventory.getBricks()+1);
+            break;
+        case(3):
+            inventory.setGrain(inventory.getGrain()+1);
+            break;
+        case(4):
+            inventory.setWool(inventory.getWool()+1);
+            break;
+        case(5):
+            inventory.setOre(inventory.getOre()+1);
+            break;
+       default:
+            break;
+    }
+    }
+
+}
+
 void takeTurn(vector<Card*>&deck, string player, int r, int c,vector<Card*>&hand, Inventory &inventory){
     int dice;
     int temp, temp2;
@@ -241,20 +317,15 @@ void takeTurn(vector<Card*>&deck, string player, int r, int c,vector<Card*>&hand
                         cout << "you don't have enough materials to buy a city"<< endl;
                     break;
                 case 3:
-                
+                    trade(inventory);
+                    
                     break;
                 default:
                     break;
             }
             break;
         case 2:
-            cout<< "What materials would you like to trade?Remember you need 3 resources of one material to trade for 1"<< endl;
-            cout<< "1 for wood, 2 for bricks, 3 for grain, 4 for wool, and 5 for Ore"<< endl;
-            cin>> temp2;
-            //Here you check if theres 3 materials, if not, u cant do this shit then DAWG
-            cout<< "What material would you like to have instead?"<< endl;
-            cout<< "1 for wood, 2 for bricks, 3 for grain, 4 for wool, and 5 for Ore"<< endl;
-            cin>> temp2;
+            trade(inventory);
             break;
         case 3:
             cout<< "SKIP"<< endl;
@@ -298,15 +369,17 @@ int main(){
     buildInitial(deck,deckSize, player, hands.at(i));
     setResources(inventory.at(i),1);
     }
-    renderdeck(deck, row, column);
  
-   while(1){
+int victory=1;
+   while(victory==1){
        for(int i=0; i<numPlayers; i++){
-           takeTurn(deck, players.at(i), row, column, hands.at(i), inventory.at(i));
            renderdeck(deck, row, column);
+           takeTurn(deck, players.at(i), row, column, hands.at(i), inventory.at(i));
+           if(inventory.at(i).getVictory()==10){
+            cout<< players.at(i) << " YOU WON, CONGRATULATIONS!!!!!!!"<< endl;
+           victory==0;
+           }
        }
    }
-    
-  
     return 0;
 }
