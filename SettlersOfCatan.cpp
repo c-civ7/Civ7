@@ -1,8 +1,8 @@
 #include <iostream> 
-#include "card.cpp"
-#include "inventoryPlayer.cpp"
 #include <vector>
 #include <string>
+#include "inventoryPlayer.h"
+#include "card.h"
 
 using namespace std;
 

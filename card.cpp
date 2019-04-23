@@ -1,5 +1,4 @@
 #include "card.h"
-#include "inventoryPlayer.h"
 
 
 using namespace std;
